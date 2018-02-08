@@ -3,18 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>My Vue 2nd try</title>
-	
+	<link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
 	<div id="vueApp">
-		<button @click="addRandom">Add Random Item to Array</button>
-		
 		<item-li v-for="(task, index) in data.tasks" :task="task" :index="index" :key="task.uid"></item-li>
 	
-		<item-info :item="data.selected"></item-info>
+		<item-info :item="dynamic.selected"></item-info>
 	</div>
 	
+
+
 <!-- JS files linkings -->
 
 <script src="js-lib/vue.js"></script>
@@ -22,9 +22,6 @@
 <script src="js/SPPlib.js"></script>
 <script src="js/SPPtask.js"></script>
 <script src="js/main.js"></script>
-
-
-
-
+<script src="js/init.js"></script>
 </body>
 </html>

@@ -1,5 +1,12 @@
 // SPP library functions and general methods.
 
+function getMousePos(event) {
+	// method to grab the global mouse position.
+	dynamicData.mouseX = event.pageX;
+	dynamicData.mouseY = event.pageY;
+
+}
+
 function getUID() {
 	// generating unique id code
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -28,7 +35,8 @@ function getTasks(inputData, separator = '\t') {
         if (task.length > 1 && task[2]) { // if there are some tasks and task have name
             if (task[2] !== '_fwx_') { // if this not the line about FWmarks
                 
-                let startDate = moment(task[4], ["DD-MM-YYYY", "YYYY-MM-DD"]).valueOf();
+                let startDate = task[4].trim();
+
                 let duration = Number(task[5] * 7 * 24 * 60 * 60 * 1000);
                 let follow;
 
@@ -51,6 +59,7 @@ function getTasks(inputData, separator = '\t') {
                 	task[0], // tags
                 	false // completed
                 	);
+
 
                 if ((zadanie.start && zadanie.start < globalData.minTime) || globalData.minTime === 0) { globalData.minTime = zadanie.start; } // capturing the global min time
                 

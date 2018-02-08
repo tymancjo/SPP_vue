@@ -41,6 +41,9 @@ class sppTask {
     	}
 
     	this.end = this.start + Number( this.duration * 7 * 24 * 60 * 60 * 1000);
+
+    	this.startTxt = moment(this.start).format('DD-MM-YYYY');
+    	this.endTxt = moment(this.end).format('DD-MM-YYYY');
     }
 
     extend(delta){
@@ -84,5 +87,19 @@ class sppTask {
     	} else {
     		return index;
     	}
+    }
+
+    getWidth(){
+    	// this will return the width of task depending of its duration as a string with %
+
+    	return (Math.round(10000*(this.durationTime / (globalData.maxTime - globalData.minTime)))/100) + '%';
+
+    }
+
+    getLeft(){
+    	// this will return the left of task depending of its duration as a string with %
+
+    	return (Math.round(10000*((this.start - globalData.minTime) / (globalData.maxTime - globalData.minTime)))/100) + '%';
+
     }
 }
