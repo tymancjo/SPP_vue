@@ -1,10 +1,14 @@
 // SPP library functions and general methods.
 
+function toggleGantt(){
+    // Switching view between list and gantt
+    dynamicData.gantt = !dynamicData.gantt;
+}
+
 function getMousePos(event) {
 	// method to grab the global mouse position.
 	dynamicData.mouseX = event.pageX;
 	dynamicData.mouseY = event.pageY;
-
 }
 
 function getUID() {
@@ -14,6 +18,21 @@ function getUID() {
   );
 }
 
+function updateTasks() {
+    // updating the global data tasklist array tasks one by one
+    // it need to be done whan we do change something somwhere 
+    // to ripple the change effect on all related tasks
+
+    let index = 0;  // Just to have  index variable
+    for (let task of globalData.tasks){
+        // updating te start point
+        if (task.follow){
+            task.start = globalData.tasks[index -1].end;
+            task.updateData();
+        }
+    index++;
+    }
+}
 
 function getTasks(inputData, separator = '\t') {
     // this function analyze the delivered text data to generate tasks from it

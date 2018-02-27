@@ -34,6 +34,7 @@
 .row {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 .modal {
@@ -55,4 +56,27 @@
 
 .invisible {
 	opacity: 0;
+}
+
+
+/* Edit list classes */
+
+.list-line {
+	padding: 5px;
+	border-bottom: 1px solid black;
+}
+
+.list-input{
+	display: block;
+	margin-right: 5px;
+	height: 100%;
+}
+
+.list-input input {
+	padding: 5px 10px;
+	margin-left: 5px;
+}
+
+.one-column {
+	min-width: 50px;
 }

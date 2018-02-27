@@ -102,4 +102,19 @@ class sppTask {
     	return (Math.round(10000*((this.start - globalData.minTime) / (globalData.maxTime - globalData.minTime)))/100) + '%';
 
     }
+
+    updateFrom(src){
+        this.name = src.name;
+        this.owner = src.owner;
+        this.start = moment(src.startTxt, ["DD-MM-YYYY", "YYYY-MM-DD"]).valueOf();
+        this.duration = src.duration;
+        this.follow = src.follow;
+        this.tags = src.tags;
+        this.completed = src.completed;
+
+        // this.uid = getUID(); // we leave the oryginal ID 
+
+        this.updateData();
+
+    }
 }

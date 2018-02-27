@@ -12,10 +12,14 @@
 
 	var dynamicData = {  // some dymaic data to be available for all objects. But not intended to be saved.
 		selected: null,
+		edit: null,
 		mouseX: 0,
 		mouseY: 0,
 		dragging: null,
+		gantt: true,
 	};
+
+
 
 
 
@@ -31,7 +35,8 @@ const listItem = {
 					<div class="task row" 
 					v-bind:style="{ 'width': task.getWidth() }"
 					v-on:mousemove="showInfo(task)"
-					v-on:mouseleave="showInfo(null)">
+					v-on:mouseleave="showInfo(null)"
+					v-on:click="editTask(task)">
 					<span>
 						{{index}} {{ task.name }}  
 					</span>
@@ -52,7 +57,11 @@ const listItem = {
 			if(!this.dynamic.dragging){
 			this.dynamic.selected = item;
 			}
-		}
+		},
+
+		editTask(task){
+			this.dynamic.edit = task;
+		},
 	}
 };
 
@@ -75,9 +84,100 @@ const itemInfo = {
 	data() {
 		return {
 			data: dynamicData,
-			globaldata: globalData
+			globaldata: globalData,
 		};
 	}
+};
+
+const editBox ={
+	template: `
+		<div class="modal info-box">
+
+			<h3> Here is the task babe</h3>
+			<h4>{{ internaltask.name }}</h4>
+			<input v-model="internaltask.name" placeholder="internaltask.name">
+
+		<div id="edit-buttons" class="row">
+			<button v-on:click="shiftTask(-1);"><<</button>
+			<button v-on:click="shiftTask(1);">>></button>
+		</div>
+
+		<div id="edit-buttons" class="row">
+			<button v-on:click="applyAction();">Apply</button>
+			<button v-on:click="cancelAction();">Cancel</button>
+		</div>
+		</div>		
+	`,
+
+	props: ['task'],
+
+	data(){
+		return {
+			global: globalData,
+			dynamic: dynamicData,
+		};
+	},
+
+	computed: {
+    // a computed value of internal task clone object
+			internaltask: function() {
+				return this.task.clone();
+			},
+    },
+
+	methods: {
+		cancelAction: function(){
+			this.dynamic.edit = null;
+		},
+		applyAction: function(){
+			this.task.updateFrom(this.internaltask);
+
+		},
+
+		shiftTask(delta){
+			this.task.shift(delta);
+			updateTasks();
+		},
+	}
+
+
+};
+
+const editInput = {
+	template: `
+			<div class="list-line row bottom-border">
+				<span v-if="task.follow" class="list-input one-column">
+				</span>
+				<span class="list-input one-column">#:{{ index }} 
+				</span>
+				<span v-if="!task.follow" class="list-input one-column">
+				</span>
+				<span class="list-input">Name: <input v-model="task.name" placeholder="task.name"> 
+				</span>
+				<span class="list-input">
+					Owner: <input v-model="task.owner" placeholder="task.owner"> 
+				</span>
+				
+				<span class="list-input">
+					Tags: <input v-model="task.tags" placeholder="task.tags"> 
+				</span>
+
+				<div class="list-input">
+					Start: {{ task.startTxt }} 
+				</div>
+				<div class="list-input">
+					End: {{ task.endTxt }} 
+				</div>
+				<div class="list-input">
+					Duration: {{ task.duration }} 
+				</div>
+
+			</div>
+	`,
+
+	props: ['task',
+			'index'],
+
 };
 
 
@@ -94,7 +194,9 @@ app = new Vue({
 
 	components: {
 		'item-li': 		listItem,
-		'item-info': 	itemInfo
+		'item-info': 	itemInfo,
+		'item-edit':  	editInput,
+		'edit-box':  	editBox,
 	},
 
 	methods: {
@@ -103,10 +205,33 @@ app = new Vue({
 			this.data.myList.splice(index,1);
 		},
 
-		addRandom() {
-			this.data.myList.push(Math.random());	
-		}
+		
 	}
 });
 
+// Temporarly hardcoded data fro development
+lista = `0, none, MCC VBB tool, , 2018-01-22, 0, 0 
+0, none, Tool trials, y, 2018-01-22, 2, 0 
+0, none, Tool Update, y, 2018-02-05, 2, 0 
+0, none, Final Tool Placement, y, 2018-02-19, 1, 0 
+0, none, first batch, y, 2018-02-26, 1, 0 
+0, none, Parts Available, y, 2018-03-05, 0, 0 
+0, none, Thermoset Tools, , 2018-03-12, 0, 0 
+0, none, Tool trials, y, 2018-03-12, 4, 0 
+0, none, Tool Update, y, 2018-04-09, 2, 0 
+0, none, Final Tool Placement, y, 2018-04-23, 1, 0 
+0, none, first batch, y, 2018-04-30, 1, 0 
+0, none, Thermosets In Hand, y, 2018-05-07, 0, 0 
+0, none, Shutters tools, , 2018-05-14, 0, 0 
+0, none, Tool trials, y, 2018-05-14, 4, 0 
+0, none, Tool Update, y, 2018-06-11, 2, 0 
+0, none, Final Tool Placement, y, 2018-06-25, 1, 0 
+0, none, first batch, y, 2018-07-02, 1, 0 
+0, none, Covers tools, , 2018-06-11, 0, 0 
+0, none, Tool trials, y, 2018-06-11, 4, 0 
+0, none, Tool Update, y, 2018-07-09, 2, 0 
+0, none, Final Tool Placement, y, 2018-07-23, 1, 0 
+0, none, first batch, y, 2018-07-30, 1, 0 
+`;
 
+getTasks(lista);

@@ -7,10 +7,18 @@
 
 </head>
 <body>
+	<div class="menu">
+		<button onclick="toggleGantt();">toggle view</button>
+	</div>
 	<div id="vueApp">
-		<item-li v-for="(task, index) in data.tasks" :task="task" :index="index" :key="task.uid"></item-li>
+		
+		<item-li v-if="dynamic.gantt" v-for="(task, index) in data.tasks" :task="task" :index="index" :key="task.uid"></item-li>
+
+		<item-edit v-if="!dynamic.gantt" v-for="(task, index) in data.tasks" :task="task" :index="index" :key="task.uid"></item-edit>
 	
-		<item-info :item="dynamic.selected"></item-info>
+		<item-info v-if="dynamic.gantt" :item="dynamic.selected"></item-info>
+
+		<edit-box v-if="dynamic.edit" :task="dynamic.edit"></edit-box>
 	</div>
 	
 
