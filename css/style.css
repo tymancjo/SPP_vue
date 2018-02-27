@@ -80,3 +80,11 @@
 .one-column {
 	min-width: 50px;
 }
+
+.red {
+	background-color: red;
+}
+
+.green {
+	background-color: green;
+}

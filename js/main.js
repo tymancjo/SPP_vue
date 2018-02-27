@@ -26,7 +26,9 @@
 // VUE related stuff
 // components definitions
 
+
 const listItem = {
+// the Gantt chart line display 
 	template: 	`
 				<div class="task-row row">
 					<div class="before-task" 
@@ -34,6 +36,7 @@ const listItem = {
 					
 					<div class="task row" 
 					v-bind:style="{ 'width': task.getWidth() }"
+					v-bind:class =" { 'green' : task.follow}"
 					v-on:mousemove="showInfo(task)"
 					v-on:mouseleave="showInfo(null)"
 					v-on:click="editTask(task)">
@@ -98,8 +101,13 @@ const editBox ={
 			<input v-model="internaltask.name" placeholder="internaltask.name">
 
 		<div id="edit-buttons" class="row">
-			<button v-on:click="shiftTask(-1);"><<</button>
-			<button v-on:click="shiftTask(1);">>></button>
+			<button v-on:click="shiftTask(-1);">[<]</button>
+			<button v-on:click="shiftTask(1);">[>]</button>
+
+			<button v-on:click="extendTask(-1);">[-]</button>
+			<button v-on:click="extendTask(1);">[+]</button>
+			
+			<button v-bind:class =" { 'red' : task.follow}" v-on:click="attachTask();">[#]</button>
 		</div>
 
 		<div id="edit-buttons" class="row">
@@ -138,17 +146,31 @@ const editBox ={
 			this.task.shift(delta);
 			updateTasks();
 		},
+
+		extendTask(delta){
+			this.task.extend(delta);
+			updateTasks();
+		},
+
+		attachTask(){
+			this.task.attach();
+			updateTasks();
+		},
 	}
 
 
 };
 
 const editInput = {
+// List in form of editable Table set
+
 	template: `
 			<div class="list-line row bottom-border">
 				<span v-if="task.follow" class="list-input one-column">
 				</span>
-				<span class="list-input one-column">#:{{ index }} 
+				<span v-bind:class =" { 'red' : task.follow, 
+				'green' : !task.follow}"
+				class="list-input one-column">#:{{ index }} 
 				</span>
 				<span v-if="!task.follow" class="list-input one-column">
 				</span>

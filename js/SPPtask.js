@@ -63,12 +63,17 @@ class sppTask {
 
     shift(delta){
     	//  this method shift the tasks start time by
-    	// delta in weeks
+    	// delta in weeks if task is not a follower
 
-    	if(delta){
+    	if(delta && !this.follow){
     		this.start += Number(delta) * 7 * 24 * 60 * 60 * 1000;
     		this.updateData();
     	}
+    }
+
+    attach(){
+        // this attach or detach the task from previous
+        this.follow = !this.follow;
     }
 
     clone(){
