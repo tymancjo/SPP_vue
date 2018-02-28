@@ -70,6 +70,11 @@
 	display: block;
 	margin-right: 5px;
 	height: 100%;
+	min-width: 30px;
+}
+
+.list-input.name {
+	width: 250px;
 }
 
 .list-input input {

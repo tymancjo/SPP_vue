@@ -18,7 +18,7 @@
 	
 		<item-info v-if="dynamic.gantt" :item="dynamic.selected"></item-info>
 
-		<edit-box v-if="dynamic.edit" :task="dynamic.edit"></edit-box>
+		<edit-box v-if="dynamic.edit && dynamic.gantt" :task="dynamic.edit"></edit-box>
 	</div>
 	
 

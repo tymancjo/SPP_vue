@@ -166,39 +166,89 @@ const editInput = {
 
 	template: `
 			<div class="list-line row bottom-border">
-				<span v-if="task.follow" class="list-input one-column">
-				</span>
-				<span v-bind:class =" { 'red' : task.follow, 
-				'green' : !task.follow}"
-				class="list-input one-column">#:{{ index }} 
-				</span>
-				<span v-if="!task.follow" class="list-input one-column">
-				</span>
-				<span class="list-input">Name: <input v-model="task.name" placeholder="task.name"> 
-				</span>
-				<span class="list-input">
-					Owner: <input v-model="task.owner" placeholder="task.owner"> 
-				</span>
-				
-				<span class="list-input">
-					Tags: <input v-model="task.tags" placeholder="task.tags"> 
-				</span>
+				<div v-if="task != dynamic.edit" class="row">
+					<span v-if="task.follow" class="list-input one-column">
+					</span>
+					<span v-bind:class =" { 'red' : task.follow, 
+					'green' : !task.follow}"
+					class="list-input one-column">#:{{ index }} 
+					</span>
+					<span v-if="!task.follow" class="list-input one-column">
+					</span>
+					<span class="list-input name">Name: {{ task.name }} 
+					</span>
+					<span class="list-input">
+						Owner: {{ task.owner }}
+					</span>
+					
+					<span class="list-input">
+						Tags: {{ task.tags }} 
+					</span>
 
-				<div class="list-input">
-					Start: {{ task.startTxt }} 
-				</div>
-				<div class="list-input">
-					End: {{ task.endTxt }} 
-				</div>
-				<div class="list-input">
-					Duration: {{ task.duration }} 
+					<div class="list-input">
+						Start: {{ task.startTxt }} 
+					</div>
+					<div class="list-input">
+						End: {{ task.endTxt }} 
+					</div>
+					<div class="list-input">
+						Duration: {{ task.duration }} 
+					</div>
+					<div class="list-input">
+						<button v-on:click="editTask(task)">Edit</button> 
+					</div>
 				</div>
 
+				<div v-if="task == dynamic.edit"  class="row green">
+					<span v-if="task.follow" class="list-input one-column">
+					</span>
+					<span v-bind:class =" { 'red' : task.follow, 
+					'green' : !task.follow}"
+					class="list-input one-column">#:{{ index }} 
+					</span>
+					<span v-if="!task.follow" class="list-input one-column">
+					</span>
+					<span class="list-input">Name: <input v-model="task.name" placeholder="task.name"> 
+					</span>
+					<span class="list-input">
+						Owner: <input v-model="task.owner" placeholder="task.owner"> 
+					</span>
+					
+					<span class="list-input">
+						Tags: <input v-model="task.tags" placeholder="task.tags"> 
+					</span>
+
+					<div class="list-input">
+						Start: {{ task.startTxt }} 
+					</div>
+					<div class="list-input">
+						End: {{ task.endTxt }} 
+					</div>
+					<div class="list-input">
+						Duration: {{ task.duration }} 
+					</div>
+					<div class="list-input">
+						<button v-on:click="editTask(null)">Close</button> 
+					</div>
+				</div>
 			</div>
 	`,
 
 	props: ['task',
 			'index'],
+
+	data(){
+		return {
+			global: globalData,
+			dynamic: dynamicData,
+		};
+	},
+
+	methods: {
+		editTask(task){
+			this.dynamic.edit = task;
+		},
+	},
 
 };
 
