@@ -117,8 +117,6 @@ class sppTask {
         this.tags = src.tags;
         this.completed = src.completed;
 
-        // this.uid = getUID(); // we leave the oryginal ID 
-
         this.updateData();
 
     }
